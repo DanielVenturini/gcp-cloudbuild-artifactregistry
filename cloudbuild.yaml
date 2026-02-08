@@ -1,5 +1,4 @@
-build:
-  logs_bucket: gcloud-build-python-image-build-logs
+logsBucket: gs://gcloud-build-python-image-build-logs
 
 steps:
   - name: python:3.13.12-alpine3.23
