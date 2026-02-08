@@ -1,3 +1,6 @@
+options:
+ logging: NONE
+
 steps:
   - name: python:3.13.12-alpine3.23
     entrypoint: pip3
@@ -6,6 +9,3 @@ steps:
   - name: python:3.13.12-alpine3.23
     entrypoint: pytest
     args: ['tests/*.py']
-
-options:
- logging: GCS_ONLY
