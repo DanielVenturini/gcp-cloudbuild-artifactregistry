@@ -2,9 +2,14 @@ logsBucket: gs://gcloud-build-python-image-build-logs
 
 steps:
   - name: python:3.13.12-alpine3.23
-    entrypoint: pip3
-    args: ['install', '-r', 'requirements.txt']
+    id: Create virtual environment
+    entrypoint: python
+    args: ['-m', 'venv', '.venv']
 
   - name: python:3.13.12-alpine3.23
-    entrypoint: pytest
+    entrypoint: .venv/bin/python
+    args: ['install','-r','requirements.txt']
+
+  - name: python:3.13.12-alpine3.23
+    entrypoint: .venv/bin/pytest
     args: ['tests/*.py']
