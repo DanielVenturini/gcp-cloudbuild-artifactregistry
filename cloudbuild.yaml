@@ -6,3 +6,7 @@ steps:
   - name: python:3.13.12-alpine3.23
     entrypoint: pytest
     args: ['tests/*.py']
+
+build:
+  service_account: 168912158152-compute@developer.gserviceaccount.com
+  logging: NONE
