@@ -1,5 +1,5 @@
-options:
- logging: NONE
+build:
+  logs_bucket: gcloud-build-python-image-build-logs
 
 steps:
   - name: python:3.13.12-alpine3.23
@@ -9,3 +9,6 @@ steps:
   - name: python:3.13.12-alpine3.23
     entrypoint: pytest
     args: ['tests/*.py']
+
+  - name: 'gcr.io/cloud-builders/docker
+    args: ['build', '-t', 'us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:latest', '.']
