@@ -17,7 +17,7 @@ steps:
     args: ['tests/']
 
   - name: gcr.io/cloud-builders/docker
+    id: Build container image
     args: ['build', '-t', 'us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID', '.']
 
-  - name: gcr.io/cloud-builders/docker
-    args: ['push', '-t', 'us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID', '.']
+images: ['us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID']
