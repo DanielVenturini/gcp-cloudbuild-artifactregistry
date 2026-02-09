@@ -1,9 +1,9 @@
 # Getting the python 3.9 image
 # Optimization: can consider using a smaller more restricted image
-FROM python:3.9
+FROM python:3.13.12-alpine3.23
 
 # Copying my app to the image
-ENV APP_HOME /app
+ENV APP_HOME=/app
 WORKDIR $APP_HOME
 COPY . ./
 
