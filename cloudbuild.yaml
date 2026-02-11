@@ -30,7 +30,8 @@ steps:
     args:
       - -c
       - |
-        gcloud compute ssh web-api-flask \
+        # why can't I ssh without specifying zone?
+        gcloud compute ssh danielventurini021@web-api-flask \
           --zone us-central1-a \
           --command "
             docker pull us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID          
