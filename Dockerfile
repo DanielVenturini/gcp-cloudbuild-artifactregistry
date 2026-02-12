@@ -11,4 +11,4 @@ COPY . ./
 RUN pip install -r requirements.txt
 
 # Startup command to serve our app
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 main:app
+CMD exec gunicorn --bind :80 --workers 1 --threads 8 main:app

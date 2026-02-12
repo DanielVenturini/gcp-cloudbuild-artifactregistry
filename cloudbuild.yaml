@@ -18,11 +18,19 @@ steps:
 
   - name: gcr.io/cloud-builders/docker
     id: Build container image
-    args: ['build', '-t', 'us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID', '.']
+    args:
+      - build
+      - -t
+      - us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID
+      - us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:latest
+      - .
 
   - name: gcr.io/cloud-builders/docker
     id: Store container image
-    args: ['push', 'us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID']
+    args:
+      - push
+      - us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID
+      - us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:latest
 
   - name: gcr.io/cloud-builders/gcloud
     id: Deploy into Cloud Engine

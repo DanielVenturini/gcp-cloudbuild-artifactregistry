@@ -1,3 +1,6 @@
 .venv
 .pytest_cache
 __pycache__
+*.sh
+*docker-compose-definition.yaml
+*docker-compose.yaml
