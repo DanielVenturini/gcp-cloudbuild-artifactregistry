@@ -39,16 +39,34 @@ steps:
       - us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:latest
 
   - name: gcr.io/cloud-builders/gcloud
+    id: Login into Artifacts Registry
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        for instance in $(gcloud compute instances list --format="table(name)" | grep -v NAME); do
+          gcloud compute ssh danielventurini021@$instance \
+            --zone us-central1-a \
+            --command "
+              gcloud auth print-access-token \
+              --impersonate-service-account 168912158152-compute@developer.gserviceaccount.com | docker login \
+              -u oauth2accesstoken \
+              --password-stdin https://us-south1-docker.pkg.dev
+            "
+        done
+
+  - name: gcr.io/cloud-builders/gcloud
     id: Deploy into Cloud Engine
     entrypoint: bash
     args:
       - -c
       - |
-        # why can't I ssh without specifying zone?
-        gcloud compute ssh danielventurini021@web-api-flask \
-          --zone us-central1-a \
-          --command "
-            docker pull us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID          
-          "
-
-images: ['us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID']
+        for instance in $(gcloud compute instances list --format="table(name)" | grep -v NAME); do
+          gcloud compute ssh danielventurini021@$instance \
+            --zone us-central1-a \
+            --command "
+              docker compose down -v
+              sed -Ei "s,web-api:.*$,web-api:$BUILD_ID,g" docker-compose.yaml
+              docker compose up -d
+            "
+        done
