@@ -27,10 +27,15 @@ steps:
       - .
 
   - name: gcr.io/cloud-builders/docker
-    id: Store container image
+    id: Store container image with BUILD_ID tag
     args:
       - push
       - us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID
+
+  - name: gcr.io/cloud-builders/docker
+    id: Store container image with latest tag
+    args:
+      - push
       - us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:latest
 
   - name: gcr.io/cloud-builders/gcloud
