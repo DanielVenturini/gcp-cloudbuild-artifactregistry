@@ -22,6 +22,7 @@ steps:
       - build
       - -t
       - us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID
+      - -t
       - us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:latest
       - .
 
