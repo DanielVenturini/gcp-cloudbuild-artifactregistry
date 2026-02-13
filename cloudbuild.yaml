@@ -62,6 +62,6 @@ steps:
           --zone us-central1-a \
           --command "
             docker compose down -v
-            sed -Ei "s,web-api:.*$,web-api:$BUILD_ID,g" docker-compose.yaml
+            sed -Ei "s,flask-app/web-api:.*$,flask-app/web-api:$BUILD_ID,g" docker-compose.yaml
             docker compose up -d
           "
