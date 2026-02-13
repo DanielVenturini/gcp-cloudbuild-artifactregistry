@@ -47,8 +47,7 @@ steps:
         gcloud compute ssh danielventurini021@web-api-flask \
           --zone us-central1-a \
           --command "
-            gcloud auth print-access-token \
-            --impersonate-service-account 168912158152-compute@developer.gserviceaccount.com | docker login \
+            gcloud auth print-access-token | docker login \
             -u oauth2accesstoken \
             --password-stdin https://us-south1-docker.pkg.dev
           "
