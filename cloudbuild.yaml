@@ -44,16 +44,14 @@ steps:
     args:
       - -c
       - |
-        for instance in $(gcloud compute instances list --format="table(name)" | grep -v NAME); do
-          gcloud compute ssh danielventurini021@$instance \
-            --zone us-central1-a \
-            --command "
-              gcloud auth print-access-token \
-              --impersonate-service-account 168912158152-compute@developer.gserviceaccount.com | docker login \
-              -u oauth2accesstoken \
-              --password-stdin https://us-south1-docker.pkg.dev
-            "
-        done
+        gcloud compute ssh danielventurini021@web-api-flask \
+          --zone us-central1-a \
+          --command "
+            gcloud auth print-access-token \
+            --impersonate-service-account 168912158152-compute@developer.gserviceaccount.com | docker login \
+            -u oauth2accesstoken \
+            --password-stdin https://us-south1-docker.pkg.dev
+          "
 
   - name: gcr.io/cloud-builders/gcloud
     id: Deploy into Cloud Engine
@@ -61,12 +59,10 @@ steps:
     args:
       - -c
       - |
-        for instance in $(gcloud compute instances list --format="table(name)" | grep -v NAME); do
-          gcloud compute ssh danielventurini021@$instance \
-            --zone us-central1-a \
-            --command "
-              docker compose down -v
-              sed -Ei "s,web-api:.*$,web-api:$BUILD_ID,g" docker-compose.yaml
-              docker compose up -d
-            "
-        done
+        gcloud compute ssh danielventurini021@web-api-flask \
+          --zone us-central1-a \
+          --command "
+            docker compose down -v
+            sed -Ei "s,web-api:.*$,web-api:$BUILD_ID,g" docker-compose.yaml
+            docker compose up -d
+          "
