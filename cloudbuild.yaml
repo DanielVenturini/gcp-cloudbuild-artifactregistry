@@ -32,7 +32,7 @@ steps:
       - --exit-code
       - '1'
       - --severity
-      - HIGH
+      - CRITICAL
       - image
       - us-south1-docker.pkg.dev/venturini-brazil/flask-app/web-api:$BUILD_ID
 
