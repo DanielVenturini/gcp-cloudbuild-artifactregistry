@@ -44,13 +44,18 @@ steps:
     args:
       - -c
       - |
-        gcloud compute ssh danielventurini021@web-api-flask \
-          --zone us-central1-a \
-          --command "
-            gcloud auth print-access-token | docker login \
-            -u oauth2accesstoken \
-            --password-stdin https://us-south1-docker.pkg.dev
-          "
+        for instance_info in $(gcloud compute instances list --format="csv(name, zone.basename())" | grep -v "name,zone"); do
+          INSTANCE=$(cut -d, -f1 <<<$instance_info)
+          ZONE=$(cut -d, -f2 <<<$instance_info)
+
+          gcloud compute ssh danielventurini021@$INSTANCE \
+            --zone $ZONE \
+            --command "
+              gcloud auth print-access-token | docker login \
+              -u oauth2accesstoken \
+              --password-stdin https://us-south1-docker.pkg.dev
+            "
+        done
 
   - name: gcr.io/cloud-builders/gcloud
     id: Deploy into Cloud Engine
@@ -58,10 +63,15 @@ steps:
     args:
       - -c
       - |
-        gcloud compute ssh danielventurini021@web-api-flask \
-          --zone us-central1-a \
-          --command "
-            docker compose down -v
-            sed -Ei "s,flask-app/web-api:.*$,flask-app/web-api:$BUILD_ID,g" docker-compose.yaml
-            docker compose up -d
-          "
+        for instance_info in $(gcloud compute instances list --format="csv(name, zone.basename())" | grep -v "name,zone"); do
+          INSTANCE=$(cut -d, -f1 <<<$instance_info)
+          ZONE=$(cut -d, -f2 <<<$instance_info)
+
+          gcloud compute ssh danielventurini021@$INSTANCE \
+            --zone $ZONE \
+            --command "
+              docker compose down -v
+              sed -Ei "s,flask-app/web-api:.*$,flask-app/web-api:$BUILD_ID,g" docker-compose.yaml
+              docker compose up -d
+            "
+        done
