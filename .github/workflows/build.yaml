@@ -9,11 +9,4 @@ jobs:
   checkout:
     steps:
       - name: Checkout source code
-
-  test:
-    steps:
-      - name: Test with Pytest
-
-  build:
-    steps:
-      - name: Build a container image
+        uses: actions/checkout@v2
